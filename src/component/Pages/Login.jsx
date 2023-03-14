@@ -47,16 +47,6 @@ export default function Login() {
       alert('You are not register');
     }
   }
-  const userDetails = JSON.parse(userData);
-  const curUser = userDetails.filter((v) => v.email === value.email && v.password === value.password);
-  if (!curUser.lenght) {
-    console.log('No user Found');
-  } else {
-    localStorage.setItem('loggedUser', JSON.stringify(curUser[0]));
-    return true;
-  }
-
-  console.log(curUser);
   const signUpPage = () => {
     navigate('/signup');
   };

@@ -1,11 +1,15 @@
-import React from 'react';
+/* eslint-disable no-unused-expressions */
+/* eslint-disable max-len */
+import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   TextField, Typography, Box, Paper, Button,
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import { OptionStyles } from './FormStyle';
 
 export default function UserUI() {
+  const { id } = useParams();
+  const [data, setData] = useState([]);
   const paperData = localStorage.getItem('paper');
   const userData = localStorage.getItem('data');
   const result = localStorage.getItem('result');
@@ -19,18 +23,9 @@ export default function UserUI() {
   const handleChange = (e, i) => {
     setValue((pre) => ({ ...pre, [e.target.name]: e.target.value }));
   };
-
-  // console.log(paperDetails[0].class);
-  // console.log(userDetails[1].class);
-  // if (paperDetails[0].class === userDetails[1].class) {
-  //   console.log("bie");
-  //   // const i=0;
-  //   if (paperDetails[0].questions[0].answer === value.answer) {
-  //     setValue(parseInt(value.marks + 1));
-  //   }else{
-  //     // console.log("hi");
-  //   }
-  // }
+  const test = paperDetails.filter((v) => (v.class === paperDetails[id - 1].class) && (v.time === paperDetails[id - 1].time));
+  // const paperNumber = paperDetails.findIndex((v) => (v.class === paperDetails[id - 1].class) && (v.time === paperDetails[id - 1].time));
+  // console.log('test :', test);
 
   const submit = (e, i) => {
     e.preventDefault();
@@ -57,92 +52,87 @@ export default function UserUI() {
 
   return (
     <>
-      {paperDetails
-        && paperDetails.length > 0
-        && paperDetails.map((x, i) => (
-          <Box key={x + Date()}>
-            {/* {x.class === userDetails[].class ? ( */}
-            <Paper elevation={12}>
-              <Typography
-                variant="h5"
-                sx={{ margin: '5px', padding: '5px' }}
-              >
-                {`Paper no-${i + 1}`}
-
-              </Typography>
-              <Typography
-                variant="h5"
-                sx={{ fontSize: '18px', margin: '5px', padding: '5px' }}
-              >
-                {`Class - ${x.class}`}
-
-              </Typography>
-              <Typography
-                variant="h5"
-                sx={{ fontSize: '18px', margin: '5px', padding: '5px' }}
-              >
-                {`Subject - ${x.subject}`}
-
-              </Typography>
-              <Typography
-                variant="h5"
-                sx={{
-                  width: '70%',
-                  fontSize: '18px',
-                  margin: '5px',
-                  padding: '5px',
-                }}
-              >
-                {`Time - ${x.time}`}
-
-              </Typography>
-              <Typography
-                variant="h5"
-                sx={{
-                  fontSize: '18px',
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  margin: '5px',
-                }}
-              >
-                {`Duration - ${x.duration}`}
-
-              </Typography>
-              <Typography
-                variant="h5"
-                sx={{ padding: '5px', margin: '5px' }}
-              >
-                {`Q.${i + 1}- ${x.questions[i].question}`}
-
-              </Typography>
-              {Object.keys(x.questions[i].options).map((y) => (
-                <React.Fragment key={x + y}>
-                  <TextField
-                    type="radio"
-                    name="answer"
-                    value={y}
-                    sx={{ padding: '10px', margin: '10px' }}
-                    onChange={(e) => handleChange(e, i)}
-                  />
-                  <OptionStyles variant="p">
-                    {x.questions[i].options[y]}
-                  </OptionStyles>
-                </React.Fragment>
-              ))}
-              <Button variant="contained" onClick={submit}>
-                Submit
-              </Button>
-              <hr />
-            </Paper>
-            {/* )
-              : (
-                <Typography>
-                  There is no paper for your class
+      {test
+        && test.length > 0
+        && test.map((x, i) => {
+          console.log();
+          return (
+            <Box key={x.key}>
+              <Paper elevation={12}>
+                <Typography
+                  variant="h3"
+                  sx={{
+                    margin: '5px', padding: '5px', display: 'flex', justifyContent: 'center',
+                  }}
+                >
+                  Paper
                 </Typography>
-              )} */}
+                <Typography
+                  variant="h5"
+                  sx={{ fontSize: '18px', margin: '5px', padding: '5px' }}
+                >
+                  {`Class - ${x.class}`}
+                </Typography>
+                <Typography
+                  variant="h5"
+                  sx={{ fontSize: '18px', margin: '5px', padding: '5px' }}
+                >
+                  {`Subject - ${x.subject}`}
+                </Typography>
+                <Typography
+                  variant="h5"
+                  sx={{
+                    width: '70%',
+                    fontSize: '18px',
+                    margin: '5px',
+                    padding: '5px',
+                  }}
+                >
+                  {`Time - ${x.time}`}
+                </Typography>
+                <Typography
+                  variant="h5"
+                  sx={{
+                    fontSize: '18px',
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    margin: '5px',
+                  }}
+                >
+                  {`Duration - ${x.duration}`}
+                </Typography>
 
-          </Box>
-        ))}
+                {x.questions.map((y, j) => (
+                  <>
+                    <Typography
+                      key={j}
+                      variant="h5"
+                      sx={{ padding: '5px', margin: '5px' }}
+                    >
+                      Q.
+                      {j + 1}
+                      -
+                      {y.question}
+                    </Typography>
+                    {Object.values(y.options).map((z, k) => (
+                      <React.Fragment key={k}>
+                        <TextField
+                          type="radio"
+                          name="answer"
+                          sx={{ padding: '10px', margin: '10px' }}
+                        />
+                        <OptionStyles variant="p">{z}</OptionStyles>
+                      </React.Fragment>
+                    ))}
+
+                  </>
+                ))}
+                <Button variant="contained" onClick={submit}>Submit</Button>
+                <hr />
+              </Paper>
+            </Box>
+          );
+        })}
     </>
   );
 }

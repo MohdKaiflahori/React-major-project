@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable array-callback-return */
 import React, { useEffect, useState } from 'react';
 import Table from '@mui/material/Table';
@@ -13,34 +14,43 @@ import moment from 'moment';
 function ViewData() {
   const navigate = useNavigate();
   const getData = localStorage.getItem('paper');
-  const [userData, setUserData] = useState([]);
-  const [isDisable, setIsDisable] = useState(true);
-  const [time, setTime] = React.useState(Date.now());
+  const paperData = JSON.parse(getData);
+  const [arr, setArr] = useState([]);
+  // const [isDisable, setIsDisable] = useState(true);
   const now = moment().format('HH:mm');
-  const now1 = moment('18:00', 'HH:mm').format('HH:mm');
-  console.log('now1 :', now1);
+  const now1 = moment('16:00', 'HH:mm').format('HH:mm');
+  // console.log('now1 :', now1);
 
   useEffect(() => {
-    if (getData) {
-      setUserData(JSON.parse(getData));
+    const storedArr = localStorage.getItem('test');
+    if (storedArr) {
+      setArr(JSON.parse(storedArr));
     }
-  }, [getData]);
+  }, []);
 
-  const examPaper = () => {
-    navigate('/student');
+  const examPaper = (e) => {
+    navigate(`/student/${e.target.id}`);
   };
-
-  React.useEffect(() => {
-    userData.map((item) => {
-      if ((now === item.time) || (now <= now1)) {
-        setIsDisable(false);
-      }
+  const addPaperDetails = (e) => {
+    const paperNumber = paperData.findIndex((v) => (v.class === paperData[e.target.id - 1].class) && (v.time === paperData[e.target.id - 1].time));
+    const newPaperDetails = paperData[paperNumber];
+    setArr((prevArr) => {
+      const updateArr = [...prevArr, newPaperDetails];
+      console.log(updateArr, 'arr');
+      localStorage.setItem('test', JSON.stringify(updateArr));
+      return updateArr;
     });
+  };
+  const handleBothClick = (e) => {
+    examPaper(e);
+    addPaperDetails(e);
+  };
+  React.useEffect(() => {
+    if (now >= '18:05') {
+      // setIsDisable(false);
+    }
   }, [now]);
-  //   const updateState = useMemo(()=>)
-  /* { new Date(x.time).getTime() >= time ?  */
 
-  console.log(userData, 'userData');
   return (
     <div>
       <TableContainer component={Paper}>
@@ -65,13 +75,13 @@ function ViewData() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {userData
-              && userData.length
-              && userData.map((row, i) => (
+            {paperData
+              && paperData.length
+              && paperData.map((row, i) => (
                 <TableRow
                   key={row.class}
                   sx={{
-                    '&:last-child td, &:last-child th': {
+                    '&:nth-child(odd) td, &:nth-child(odd) th': {
                       border: 0,
                       backgroundColor: '#f6f9ff',
                     },
@@ -84,7 +94,7 @@ function ViewData() {
                   <TableCell align="right">{`${row.subject}`}</TableCell>
                   <TableCell align="right">{`${row.time}`}</TableCell>
                   <TableCell align="right">
-                    <Button onClick={examPaper} disabled={isDisable}>
+                    <Button id={i + 1} onClick={handleBothClick}>
                       Start
                     </Button>
                   </TableCell>

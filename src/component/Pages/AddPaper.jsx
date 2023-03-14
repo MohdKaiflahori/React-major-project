@@ -12,7 +12,6 @@ const defaultValue = {
   duration: '',
   questions: [
     {
-      key: Date.now(),
       question: '',
       options: {
         a: '',
@@ -34,7 +33,7 @@ export default function AddPaper() {
     if (i !== undefined) {
       const { name } = e.target;
       const prev = JSON.parse(JSON.stringify(formData));
-      console.log('prev', prev, i);
+      console.log('prev', prev, i, prev.questions[i]);
       if (!prev.questions[i]) prev.questions[i] = {};
       const nameArr = name.split('.');
       if (['a', 'b', 'c', 'd'].includes(nameArr[1])) {
@@ -50,47 +49,47 @@ export default function AddPaper() {
     }
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-  // const validate = () => {
-  //   const err = {};
+  const validate = () => {
+    const err = {};
 
-  //   if (
-  //     !(formData.class && formData.class.length > 0)
-  //     || !(formData.duration && formData.duration.length > 0)
-  //     || !(formData.time && formData.time.length > 0)
-  //     || !(formData.subject && formData.subject.length > 0)
-  //   ) {
-  //     err.class = 'Class is required';
-  //     err.duration = 'Duration is required';
-  //     err.time = 'Time is required';
-  //     err.subject = 'Subject is required';
-  //   }
-  //   return err;
-  // };
+    if (
+      !(formData.class && formData.class.length > 0)
+      || !(formData.duration && formData.duration.length > 0)
+      || !(formData.time && formData.time.length > 0)
+      || !(formData.subject && formData.subject.length > 0)
+    ) {
+      err.class = 'Class is required';
+      err.duration = 'Duration is required';
+      err.time = 'Time is required';
+      err.subject = 'Subject is required';
+    }
+    return err;
+  };
   const add = () => {
-    console.log(formData);
     const _clone = { ...formData };
-    _clone.questions.push({ ...defaultValue.questions[0], key: Date.now() });
+    const questionSet = { ...defaultValue.questions[0], key: Date.now() };
+    _clone.questions.push(questionSet);
     setFormData(_clone);
   };
   const onSubmit = (e) => {
     e.preventDefault();
-    // setError(validate());
+    setError(validate());
     console.log(formData);
-    // if (Object.keys(validate()).length === 0) {
-    const arr = [];
-    if (paperData) {
-      const oldPaper = JSON.parse(paperData);
-      console.log(oldPaper, 'oldPaper');
-      arr.push(...oldPaper);
+    if (Object.keys(validate()).length === 0) {
+      const arr = [];
+      if (paperData) {
+        const oldPaper = JSON.parse(paperData);
+        console.log(oldPaper, 'oldPaper');
+        arr.push(...oldPaper);
+        arr.push(formData);
+        clearData();
+        return localStorage.setItem('paper', JSON.stringify(arr));
+      }
       arr.push(formData);
       clearData();
-      return localStorage.setItem('paper', JSON.stringify(arr));
+      localStorage.setItem('paper', JSON.stringify(arr));
     }
-    arr.push(formData);
-    clearData();
-    localStorage.setItem('paper', JSON.stringify(arr));
   };
-  // };
 
   const clearData = () => {
     setFormData(defaultValue);
@@ -143,7 +142,7 @@ export default function AddPaper() {
           </MainContainerStyle>
           <MainContainerStyle>
             {formData.questions.map((x, i) => (
-              <React.Fragment key={x + Date()}>
+              <React.Fragment key={x.key}>
                 <Box key={x.key} sx={{ gap: '10px' }}>
                   <TextField
                     sx={{ display: 'block' }}
@@ -151,12 +150,12 @@ export default function AddPaper() {
                     type="text"
                     fullWidth
                     name="question"
-                    // label={`Question-${i + 1}`}
+                    label={`Question-${i + 1}`}
                     onChange={(e) => handleChange(e, i)}
                   />
                 </Box>
                 <Box>
-                  {Object.keys(x.options).map((y, j) => (
+                  {Object.keys(x.options).map((y, ind) => (
                     <React.Fragment key={x.key + y}>
                       <TextField
                         type="radio"
@@ -167,6 +166,7 @@ export default function AddPaper() {
                       <TextField
                         type="text"
                         name={`option.${y}`}
+                        label={`Option${ind + 1}`}
                         onChange={(e) => handleChange(e, i)}
                         sx={{ width: '215px', margin: '10px' }}
                       />
