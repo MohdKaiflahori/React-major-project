@@ -8,7 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import { Paper, Typography, Button } from '@mui/material';
 
 export default function ViewResult() {
-  const result = localStorage.getItem('result');
+  const result = localStorage.getItem('test');
   const resultData = JSON.parse(result);
   return (
     <div>
@@ -21,17 +21,17 @@ export default function ViewResult() {
             backgroundColor: '#f6f9ff',
           }}
         >
-          All Paper list
+          Result List
         </Typography>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>Sr. No</TableCell>
-              <TableCell align="right">Student Name</TableCell>
-              <TableCell align="right">Class</TableCell>
-              <TableCell align="right">Subject</TableCell>
-              <TableCell align="right">Time</TableCell>
-              <TableCell align="right">Marks</TableCell>
+              <TableCell align="center">Student Name</TableCell>
+              <TableCell align="center">Class</TableCell>
+              <TableCell align="center">Subject</TableCell>
+              <TableCell align="center">Time</TableCell>
+              <TableCell align="center">Marks</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -50,15 +50,11 @@ export default function ViewResult() {
                   <TableCell component="th" scope="row">
                     {i + 1}
                   </TableCell>
-                  <TableCell align="right">{`${row.name}`}</TableCell>
-                  <TableCell align="right">{`${row.class}`}</TableCell>
-                  <TableCell align="right">{`${row.subject}`}</TableCell>
-                  <TableCell align="right">{`${row.time}`}</TableCell>
-                  <TableCell align="right">
-                    <Button>
-                      Start
-                    </Button>
-                  </TableCell>
+                  <TableCell align="center">{`${row.name}`}</TableCell>
+                  <TableCell align="center">{`${row.class}`}</TableCell>
+                  <TableCell align="center">{`${row.subject}`}</TableCell>
+                  <TableCell align="center">{`${row.time}`}</TableCell>
+                  <TableCell align="center" />
                 </TableRow>
               ))}
           </TableBody>
