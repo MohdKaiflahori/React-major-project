@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-no-bind */
 import React, { useState } from 'react';
 import {
-  TextField, Button, Link, Paper, Typography,
+  TextField, Button, Link, Paper, Typography, Grid,
 } from '@mui/material';
 import { Stack } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
@@ -47,57 +47,49 @@ export default function Login() {
       alert('You are not register');
     }
   }
-  const userDetails = JSON.parse(userData);
-  const curUser = userDetails.filter((v) => v.email === value.email && v.password === value.password);
-  if (!curUser.lenght) {
-    console.log('No user Found');
-  } else {
-    localStorage.setItem('loggedUser', JSON.stringify(curUser[0]));
-    return true;
-  }
-
-  console.log(curUser);
   const signUpPage = () => {
     navigate('/signup');
   };
   return (
     <BoxStyles sx={{ height: '100vh' }}>
       <Paper elevation={10}>
-        <MainContainerStyle component="form" sx={{ gap: '20px' }}>
-          <Typography variant="h2" sx={{ textAlign: 'center' }}>
-            Login Page
-          </Typography>
-          <TextField
-            required
-            fullWidth
-            id="outlined-disabled"
-            label="Email"
-            type="email"
-            name="email"
-            onChange={handleChange}
-          />
-          <TextField
-            id="outlined-password-input"
-            label="Password"
-            type="password"
-            name="password"
-            onChange={handleChange}
-          />
-          <Stack
-            sx={{ display: 'flex', gap: '115px', flexDirection: 'row-reverse' }}
-          >
-            <Button variant="contained" onClick={login}>
-              Login
-            </Button>
-            <Button
-              variant="body2"
-              sx={{ width: '210px' }}
-              onClick={signUpPage}
+        <Grid>
+          <MainContainerStyle component="form" sx={{ gap: '20px' }}>
+            <Typography variant="h2" sx={{ textAlign: 'center' }}>
+              Login Page
+            </Typography>
+            <TextField
+              required
+              fullWidth
+              id="outlined-disabled"
+              label="Email"
+              type="email"
+              name="email"
+              onChange={handleChange}
+            />
+            <TextField
+              id="outlined-password-input"
+              label="Password"
+              type="password"
+              name="password"
+              onChange={handleChange}
+            />
+            <Stack
+              sx={{ display: 'flex', gap: '115px', flexDirection: 'row-reverse' }}
             >
-              SignUp
-            </Button>
-          </Stack>
-        </MainContainerStyle>
+              <Button variant="contained" onClick={login}>
+                Login
+              </Button>
+              <Button
+                variant="body2"
+                sx={{ width: '39%' }}
+                onClick={signUpPage}
+              >
+                SignUp
+              </Button>
+            </Stack>
+          </MainContainerStyle>
+        </Grid>
       </Paper>
     </BoxStyles>
   );

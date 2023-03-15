@@ -21,11 +21,10 @@ function App() {
             <Route exact path="viewResult" element={<ViewResult />} />
           </Route>
           <Route exact path="/" element={<Login />} />
-          <Route exact path="/student" element={<Student />} />
+          <Route exact path="/student/:id" element={<Student />} />
           <Route exact path="/signup" element={<Registration />} />
           <Route exact path="/paperList" element={<PaperList />} />
           <Route exact path="/thankPage" element={<ThanksPage />} />
-
         </Routes>
       </Router>
     </>
