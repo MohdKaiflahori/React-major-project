@@ -16,7 +16,7 @@ function ViewData() {
   const getData = localStorage.getItem('paper');
   const paperData = JSON.parse(getData);
   const [arr, setArr] = useState([]);
-  // const [isDisable, setIsDisable] = useState(true);
+  const [isDisable, setIsDisable] = useState(true);
   const now = moment().format('HH:mm');
   const now1 = moment('16:00', 'HH:mm').format('HH:mm');
   // console.log('now1 :', now1);
@@ -28,9 +28,6 @@ function ViewData() {
     }
   }, []);
 
-  const examPaper = (e) => {
-    navigate(`/student/${e.target.id}`);
-  };
   const addPaperDetails = (e) => {
     const paperNumber = paperData.findIndex((v) => (v.class === paperData[e.target.id - 1].class) && (v.time === paperData[e.target.id - 1].time));
     const newPaperDetails = paperData[paperNumber];
@@ -38,16 +35,15 @@ function ViewData() {
       const updateArr = [...prevArr, newPaperDetails];
       console.log(updateArr, 'arr');
       localStorage.setItem('test', JSON.stringify(updateArr));
+      navigate(`/student/${e.target.id}`);
       return updateArr;
     });
   };
-  const handleBothClick = (e) => {
-    examPaper(e);
-    addPaperDetails(e);
-  };
+  // const handleBothClick = (e) => {
+  // };
   React.useEffect(() => {
-    if (now >= '18:05') {
-      // setIsDisable(false);
+    if (now >= '10:21') {
+      setIsDisable(false);
     }
   }, [now]);
 
@@ -94,7 +90,7 @@ function ViewData() {
                   <TableCell align="right">{`${row.subject}`}</TableCell>
                   <TableCell align="right">{`${row.time}`}</TableCell>
                   <TableCell align="right">
-                    <Button id={i + 1} onClick={handleBothClick}>
+                    <Button id={i + 1} onClick={addPaperDetails} disabled={isDisable}>
                       Start
                     </Button>
                   </TableCell>

@@ -15,38 +15,45 @@ export default function UserUI() {
   const result = localStorage.getItem('result');
   const paperDetails = JSON.parse(paperData);
   const userDetails = JSON.parse(userData);
-  const [value, setValue] = React.useState({
+  const [value, setValue] = React.useState([{
     answer: '',
     marks: '',
-  });
+  }]);
   const navigate = useNavigate();
   const handleChange = (e, i) => {
-    setValue((pre) => ({ ...pre, [e.target.name]: e.target.value }));
-  };
-  const test = paperDetails.filter((v) => (v.class === paperDetails[id - 1].class) && (v.time === paperDetails[id - 1].time));
-  // const paperNumber = paperDetails.findIndex((v) => (v.class === paperDetails[id - 1].class) && (v.time === paperDetails[id - 1].time));
-  // console.log('test :', test);
-
-  const submit = (e, i) => {
-    e.preventDefault();
-    navigate('/thankPage');
-    if (paperDetails[0].questions[0].answer === value.answer) {
-      setValue(parseInt(value.marks + 1, 10));
-      console.log('hi');
-    } else {
-      setValue(parseInt(value.marks + 0, 10));
-      console.log('bie');
+    const [key, eventtriggeredon] = e.target.name.split('.');
+    console.log('key', key);
+    const form = JSON.parse(JSON.stringify(value));
+    if (!form[i]) {
+      form[i] = {
+        answer: '',
+        marks: '',
+      };
     }
-    console.log(value);
+    form[i][key] = e.target.value ? eventtriggeredon : '';
+    setValue(form);
+  };
+  const test = React.useMemo(() => paperDetails.filter((v) => (v.class === paperDetails[id - 1].class) && (v.time === paperDetails[id - 1].time)), [id]);
+  const submit = (e, i) => {
+    navigate('/thankPage');
+    const [{ questions }] = test;
+    const form = JSON.parse(JSON.stringify(value));
+    questions.forEach((x, i) => {
+      if (x.answer === form[i].answer) {
+        form[i].marks = 1;
+      } else {
+        form[i].marks = 0;
+      }
+    });
+    setValue(form);
     const arr = [];
     if (result) {
       const oldResult = JSON.parse(result);
-      console.log(oldResult, 'oldResult');
       arr.push(...oldResult);
-      arr.push(value);
+      arr.push(form);
       return localStorage.setItem('result', JSON.stringify(arr));
     }
-    arr.push(value);
+    arr.push(form);
     localStorage.setItem('result', JSON.stringify(arr));
   };
 
@@ -57,7 +64,7 @@ export default function UserUI() {
         && test.map((x, i) => {
           console.log();
           return (
-            <Box key={x.key}>
+            <Box key={x.key + i}>
               <Paper elevation={12}>
                 <Typography
                   variant="h3"
@@ -103,7 +110,7 @@ export default function UserUI() {
                 </Typography>
 
                 {x.questions.map((y, j) => (
-                  <>
+                  <React.Fragment key={y.key || y.question}>
                     <Typography
                       key={j}
                       variant="h5"
@@ -114,18 +121,20 @@ export default function UserUI() {
                       -
                       {y.question}
                     </Typography>
-                    {Object.values(y.options).map((z, k) => (
-                      <React.Fragment key={k}>
+                    {Object.keys(y.options).map((z, k) => (
+                      <React.Fragment key={k.toString() + j.toString() + z}>
                         <TextField
-                          type="radio"
-                          name="answer"
                           sx={{ padding: '10px', margin: '10px' }}
+                          type="radio"
+                          name={`answer.${z}.${j}`}
+                          value={z}
+                          onChange={(e) => handleChange(e, j)}
                         />
-                        <OptionStyles variant="p">{z}</OptionStyles>
+                        <OptionStyles variant="p">{y.options[z]}</OptionStyles>
                       </React.Fragment>
                     ))}
 
-                  </>
+                  </React.Fragment>
                 ))}
                 <Button variant="contained" onClick={submit}>Submit</Button>
                 <hr />

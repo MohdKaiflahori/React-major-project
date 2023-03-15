@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import React, { useEffect, useState } from 'react';
 import {
   TextField, Button, Typography, Paper,

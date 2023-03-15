@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Box, Button, Paper, TextField, Typography,
+  Box, Button, Paper, TextField, Typography, Grid,
 } from '@mui/material';
 import { Stack } from '@mui/system';
 import { BoxStyles, MainContainerStyle } from './FormStyle';
@@ -97,102 +97,104 @@ export default function AddPaper() {
 
   return (
     <>
-      <BoxStyles>
-        <Paper elevation={10} sx={{ width: '100%' }}>
-          <Typography
-            variant="h3"
-            sx={{ textAlign: 'center', padding: '10px' }}
-          >
-            Question Paper
-          </Typography>
-          <MainContainerStyle component="form" sx={{ gap: '15px' }}>
-            <TextField
-              id="outlined-basic"
-              label="Class"
-              name="class"
-              variant="outlined"
-              onChange={handleChange}
-              helperText={error.class}
-            />
-            <TextField
-              id="outlined-basic"
-              label="Subject"
-              name="subject"
-              variant="outlined"
-              onChange={handleChange}
-              helperText={error.subject}
-            />
-            <TextField
-              id="outlined-basic"
-              label="Time"
-              variant="outlined"
-              type="time"
-              onChange={handleChange}
-              name="time"
-              helperText={error.time}
-            />
-            <TextField
-              id="outlined-basic"
-              label="Duration"
-              name="duration"
-              variant="outlined"
-              onChange={handleChange}
-              helperText={error.duration}
-            />
-          </MainContainerStyle>
-          <MainContainerStyle>
-            {formData.questions.map((x, i) => (
-              <React.Fragment key={x.key}>
-                <Box key={x.key} sx={{ gap: '10px' }}>
-                  <TextField
-                    sx={{ display: 'block' }}
-                    id={`question-${i + 1}`}
-                    type="text"
-                    fullWidth
-                    name="question"
-                    label={`Question-${i + 1}`}
-                    onChange={(e) => handleChange(e, i)}
-                  />
-                </Box>
-                <Box>
-                  {Object.keys(x.options).map((y, ind) => (
-                    <React.Fragment key={x.key + y}>
-                      <TextField
-                        type="radio"
-                        onChange={(e) => handleChange(e, i)}
-                        name={`answer.${y}`}
-                        sx={{ width: '18px', margin: '6px', marginTop: '20px' }}
-                      />
-                      <TextField
-                        type="text"
-                        name={`option.${y}`}
-                        label={`Option${ind + 1}`}
-                        onChange={(e) => handleChange(e, i)}
-                        sx={{ width: '215px', margin: '10px' }}
-                      />
-                    </React.Fragment>
-                  ))}
-                </Box>
-              </React.Fragment>
-            ))}
-          </MainContainerStyle>
-          <Stack
-            sx={{
-              display: 'flex',
-              flexDirection: 'row-reverse',
-              padding: '10px',
-              gap: '722px',
-            }}
-          >
-            <Button variant="contained" type="submit" onClick={onSubmit}>
-              Done
-            </Button>
-            <Button variant="outlined" onClick={add} sx={{ width: '210px' }}>
-              Add Question
-            </Button>
-          </Stack>
-        </Paper>
-      </BoxStyles>
+      <Grid container spacing={2}>
+        <BoxStyles>
+          <Paper elevation={10} sx={{ width: '100%' }}>
+            <Typography
+              variant="h3"
+              sx={{ textAlign: 'center', padding: '10px' }}
+            >
+              Question Paper
+            </Typography>
+            <MainContainerStyle component="form" sx={{ gap: '15px' }}>
+              <TextField
+                id="outlined-basic"
+                label="Class"
+                name="class"
+                variant="outlined"
+                onChange={handleChange}
+                helperText={error.class}
+              />
+              <TextField
+                id="outlined-basic"
+                label="Subject"
+                name="subject"
+                variant="outlined"
+                onChange={handleChange}
+                helperText={error.subject}
+              />
+              <TextField
+                id="outlined-basic"
+                label="Time"
+                variant="outlined"
+                type="time"
+                onChange={handleChange}
+                name="time"
+                helperText={error.time}
+              />
+              <TextField
+                id="outlined-basic"
+                label="Duration"
+                name="duration"
+                variant="outlined"
+                onChange={handleChange}
+                helperText={error.duration}
+              />
+            </MainContainerStyle>
+            <MainContainerStyle>
+              {formData.questions.map((x, i) => (
+                <React.Fragment key={x.key}>
+                  <Box key={x.key} sx={{ gap: '10px' }}>
+                    <TextField
+                      sx={{ display: 'block' }}
+                      id={`question-${i + 1}`}
+                      type="text"
+                      fullWidth
+                      name="question"
+                      label={`Question-${i + 1}`}
+                      onChange={(e) => handleChange(e, i)}
+                    />
+                  </Box>
+                  <Box>
+                    {Object.keys(x.options).map((y, ind) => (
+                      <React.Fragment key={x.key + y}>
+                        <TextField
+                          type="radio"
+                          onChange={(e) => handleChange(e, i)}
+                          name={`answer.${y}`}
+                          sx={{ width: '18px', margin: '6px', marginTop: '20px' }}
+                        />
+                        <TextField
+                          type="text"
+                          name={`option.${y}`}
+                          label={`Option${ind + 1}`}
+                          onChange={(e) => handleChange(e, i)}
+                          sx={{ width: '215px', margin: '10px' }}
+                        />
+                      </React.Fragment>
+                    ))}
+                  </Box>
+                </React.Fragment>
+              ))}
+            </MainContainerStyle>
+            <Stack
+              sx={{
+                display: 'flex',
+                flexDirection: 'row-reverse',
+                padding: '10px',
+                gap: '722px',
+              }}
+            >
+              <Button variant="contained" type="submit" onClick={onSubmit}>
+                Done
+              </Button>
+              <Button variant="outlined" onClick={add} sx={{ width: '210px' }}>
+                Add Question
+              </Button>
+            </Stack>
+          </Paper>
+        </BoxStyles>
+      </Grid>
     </>
   );
 }
