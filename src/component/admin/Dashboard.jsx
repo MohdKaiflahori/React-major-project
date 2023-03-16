@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import { Outlet, useNavigate } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Divider } from '@mui/material';
+import AddPaper from './AddPaper';
 
 const drawerWidth = 240;
 
