@@ -45,7 +45,7 @@ function ViewData() {
           </TableHead>
           <TableBody>
             {paperlist
-              && paperlist.length
+              && paperlist.length > 0
               && paperlist.map((row, i) => (
                 <TableRow
                   key={row.class}

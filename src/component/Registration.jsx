@@ -1,5 +1,5 @@
 /* eslint-disable consistent-return */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   TextField, Button, Typography, Paper,
 } from '@mui/material';
@@ -16,7 +16,6 @@ export default function Registration() {
     confirm: '',
     class: '',
   });
-  const [isSubmit, setIsSubmit] = useState(false);
   const [error, setError] = useState({});
   const userData = localStorage.getItem('data');
   const navigate = useNavigate();
