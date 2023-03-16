@@ -2,14 +2,13 @@
 /* eslint-disable react/jsx-no-bind */
 import React, { useState } from 'react';
 import {
-  TextField, Button, Link, Paper, Typography, Grid,
+  TextField, Button, Paper, Typography, Grid,
 } from '@mui/material';
 import { Stack } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import { MainContainerStyle, BoxStyles } from './FormStyle';
 
 export default function Login() {
-  console.log(process.env);
   const userData = localStorage.getItem('data');
   const [value, setValue] = useState({
     email: '',
@@ -26,8 +25,6 @@ export default function Login() {
     e.preventDefault();
     const { email } = value;
     const { password } = value;
-    console.log('email :', email);
-    console.log('password :', password);
     if (
       process.env.REACT_APP_USER === email
       && process.env.REACT_APP_PASSWORD === password
@@ -41,11 +38,17 @@ export default function Login() {
       if (checkUser) {
         navigate('/paperList');
       } else {
-        alert('Your email and password are incorrect');
+        console.log('Your email and password are incorrect');
       }
     } else {
-      alert('You are not register');
+      console.log('You are not register');
     }
+    const userLogin = JSON.parse(userData);
+    const checkUser = userLogin.filter(
+      (user) => email === user.email && password === user.password,
+    );
+    console.log('checkUser :', checkUser);
+    localStorage.setItem('loggedUser', JSON.stringify(checkUser));
   }
   const signUpPage = () => {
     navigate('/signup');
