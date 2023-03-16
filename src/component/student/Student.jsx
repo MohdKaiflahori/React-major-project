@@ -1,20 +1,19 @@
-/* eslint-disable no-unused-expressions */
+/* eslint-disable consistent-return */
 /* eslint-disable max-len */
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   TextField, Typography, Box, Paper, Button,
 } from '@mui/material';
-import { OptionStyles } from './FormStyle';
+import { OptionStyles } from '../FormStyle';
 
 export default function UserUI() {
   const { id } = useParams();
-  const [data, setData] = useState([]);
   const paperData = localStorage.getItem('paper');
-  const userData = localStorage.getItem('data');
   const result = localStorage.getItem('result');
   const paperDetails = JSON.parse(paperData);
-  const userDetails = JSON.parse(userData);
+  const loggedUser = localStorage.getItem('loggedUser');
+  const curUser = JSON.parse(loggedUser);
   const [value, setValue] = React.useState([{
     answer: '',
     marks: '',
@@ -33,8 +32,29 @@ export default function UserUI() {
     form[i][key] = e.target.value ? eventtriggeredon : '';
     setValue(form);
   };
-  const test = React.useMemo(() => paperDetails.filter((v) => (v.class === paperDetails[id - 1].class) && (v.time === paperDetails[id - 1].time)), [id]);
-  const submit = (e, i) => {
+  const test = paperDetails.filter((v) => (v.class === paperDetails[id - 1].class) && (v.time === paperDetails[id - 1].time));
+
+  let results = [];
+  if (localStorage.getItem('student')) {
+    results = JSON.parse(localStorage.getItem('student'));
+  }
+  const currentResult = {
+    student: curUser[0].firstname,
+    class: test[0].class,
+    subject: test[0].subject,
+    time: test[0].time,
+  };
+  const existingResultIndex = results.find((result) => result.student === currentResult.student
+    && result.class === currentResult.class
+    && result.subject === currentResult.subject
+    && result.time === currentResult.time);
+
+  if (!existingResultIndex) {
+    // currentResult doesn't exist in results, so add it
+    results.push(currentResult);
+    localStorage.setItem('student', JSON.stringify(results));
+  }
+  const submit = () => {
     navigate('/thankPage');
     const [{ questions }] = test;
     const form = JSON.parse(JSON.stringify(value));

@@ -18,7 +18,6 @@ export default function Registration() {
   });
   const [isSubmit, setIsSubmit] = useState(false);
   const [error, setError] = useState({});
-  const [isError, setIsError] = useState(false);
   const userData = localStorage.getItem('data');
   const navigate = useNavigate();
   const handleChange = (e) => {
@@ -101,7 +100,7 @@ export default function Registration() {
     return err;
   };
   const loginPage = () => {
-    navigate('/');
+    navigate('/login');
   };
   return (
     <BoxStyles>

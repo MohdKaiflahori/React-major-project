@@ -1,9 +1,10 @@
+/* eslint-disable consistent-return */
 import React, { useState } from 'react';
 import {
   Box, Button, Paper, TextField, Typography, Grid,
 } from '@mui/material';
 import { Stack } from '@mui/system';
-import { BoxStyles, MainContainerStyle } from './FormStyle';
+import { BoxStyles, MainContainerStyle } from '../FormStyle';
 
 const defaultValue = {
   class: '',
@@ -97,7 +98,7 @@ export default function AddPaper() {
 
   return (
     <>
-      <Grid container spacing={2}>
+      <Grid>
         <BoxStyles>
           <Paper elevation={10} sx={{ width: '100%' }}>
             <Typography

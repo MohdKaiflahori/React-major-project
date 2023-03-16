@@ -10,16 +10,17 @@ import TableRow from '@mui/material/TableRow';
 import { Paper, Typography } from '@mui/material';
 
 export default function ViewResult() {
-  const result = localStorage.getItem('test');
+  const result = localStorage.getItem('student');
   const resultData = JSON.parse(result);
+  console.log('resultData :', resultData);
   const data = localStorage.getItem('result');
   const resultValue = JSON.parse(data);
-  // console.log(resultValue);
-  const finalMarks = resultValue.reduce((acc, { marks }) => {
-    acc + parseInt(marks, 10);
-    console.log('mark :', marks);
+  console.log('resultValue :', resultValue);
+  const finalResult = resultValue.map((ans, i) => {
+    const finalMarks = resultValue[i].reduce((acc, cur) => acc + Number(cur.marks, 10), 0);
+    return finalMarks;
   });
-  console.log(finalMarks, 'marks');
+  console.log(finalResult);
   return (
     <div>
       <TableContainer component={Paper}>
@@ -49,7 +50,7 @@ export default function ViewResult() {
               && resultData.length
               && resultData.map((row, i) => (
                 <TableRow
-                  key={row.class + i}
+                  key={row.class + 1 + i}
                   sx={{
                     '&:nth-child(odd) td, &:nth-child(odd) th': {
                       border: 0,
@@ -60,11 +61,11 @@ export default function ViewResult() {
                   <TableCell component="th" scope="row">
                     {i + 1}
                   </TableCell>
-                  <TableCell align="center">{`${row.class}`}</TableCell>
+                  <TableCell align="center">{`${row.student}`}</TableCell>
                   <TableCell align="center">{`${row.class}`}</TableCell>
                   <TableCell align="center">{`${row.subject}`}</TableCell>
                   <TableCell align="center">{`${row.time}`}</TableCell>
-                  <TableCell align="center">{`${row.mark}`}</TableCell>
+                  <TableCell align="center">{`${finalResult[i]}`}</TableCell>
                 </TableRow>
               ))}
           </TableBody>

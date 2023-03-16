@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 /* eslint-disable array-callback-return */
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -9,47 +9,20 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { Button, Paper, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import moment from 'moment';
 
 function ViewData() {
   const navigate = useNavigate();
   const getData = localStorage.getItem('paper');
   const paperData = JSON.parse(getData);
-  const [arr, setArr] = useState([]);
-  const [isDisable, setIsDisable] = useState(true);
-  const now = moment().format('HH:mm');
-  const now1 = moment('16:00', 'HH:mm').format('HH:mm');
-  // console.log('now1 :', now1);
-
-  useEffect(() => {
-    const storedArr = localStorage.getItem('test');
-    if (storedArr) {
-      setArr(JSON.parse(storedArr));
-    }
-  }, []);
-
   const addPaperDetails = (e) => {
-    const paperNumber = paperData.findIndex((v) => (v.class === paperData[e.target.id - 1].class) && (v.time === paperData[e.target.id - 1].time));
-    const newPaperDetails = paperData[paperNumber];
-    setArr((prevArr) => {
-      const updateArr = [...prevArr, newPaperDetails];
-      console.log(updateArr, 'arr');
-      localStorage.setItem('test', JSON.stringify(updateArr));
-      navigate(`/student/${e.target.id}`);
-      return updateArr;
-    });
+    navigate(`/student/${e.target.id}`);
   };
-  // const handleBothClick = (e) => {
-  // };
-  React.useEffect(() => {
-    if (now >= '10:21') {
-      setIsDisable(false);
-    }
-  }, [now]);
-
+  const loggedUser = localStorage.getItem('loggedUser');
+  const curUser = JSON.parse(loggedUser);
+  const paperlist = paperData.filter((list) => list.class === curUser[0].class);
   return (
     <div>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{ minWidth: 650 }}>
         <Typography
           variant="h4"
           sx={{
@@ -71,9 +44,9 @@ function ViewData() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {paperData
-              && paperData.length
-              && paperData.map((row, i) => (
+            {paperlist
+              && paperlist.length
+              && paperlist.map((row, i) => (
                 <TableRow
                   key={row.class}
                   sx={{
@@ -90,7 +63,7 @@ function ViewData() {
                   <TableCell align="right">{`${row.subject}`}</TableCell>
                   <TableCell align="right">{`${row.time}`}</TableCell>
                   <TableCell align="right">
-                    <Button id={i + 1} onClick={addPaperDetails} disabled={isDisable}>
+                    <Button id={i + 1} onClick={addPaperDetails}>
                       Start
                     </Button>
                   </TableCell>

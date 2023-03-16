@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
 import { Box, Typography } from '@mui/material';
 
-export const MainContainerStyle = styled(Box)(({ theme }) => ({
+export const MainContainerStyle = styled(Box)(() => ({
   display: 'flex',
   border: '1px solid #eee',
   borderRadius: 4,
-  width: 600,
+  width: '600px',
   margin: 'auto',
   flexDirection: 'column',
   padding: '30px',

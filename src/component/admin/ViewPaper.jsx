@@ -4,7 +4,7 @@ import {
   Box, Paper, TextField, Typography,
 } from '@mui/material';
 import React from 'react';
-import { LabelStyles } from './FormStyle';
+import { LabelStyles } from '../FormStyle';
 
 export default function ViewPaper() {
   const paperData = localStorage.getItem('paper');
@@ -70,7 +70,7 @@ export default function ViewPaper() {
                       Q.
                       {j + 1}-{y.question}
                     </Typography>
-                    {Object.values(y.options).map((z, k) => (
+                    {Object.keys(y.options).map((z, k) => (
                       <React.Fragment key={k}>
                         <TextField
                           type="radio"
@@ -78,7 +78,7 @@ export default function ViewPaper() {
                           disabled
                           sx={{ padding: '10px', margin: '10px' }}
                         />
-                        <LabelStyles variant="p">{z}</LabelStyles>
+                        <LabelStyles variant="p">{y.options[z]}</LabelStyles>
                       </React.Fragment>
                     ))}
                     <Typography
