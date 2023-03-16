@@ -17,6 +17,7 @@ function App() {
       <Router>
         <Routes>
           <Route exact path="/dashboard" element={<Dashboard />}>
+            <Route exact index element={<AddPaper />} />
             <Route exact path="addPaper" element={<AddPaper />} />
             <Route exact path="viewPaper" element={<ViewPaper />} />
             <Route exact path="viewResult" element={<ViewResult />} />
