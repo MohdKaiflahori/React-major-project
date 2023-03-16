@@ -26,12 +26,6 @@ export default function Registration() {
       [e.target.name]: e.target.value,
     }));
   };
-
-  useEffect(() => {
-    if (Object.keys(error).length === 0 && isSubmit) {
-      navigate('/paperList');
-    }
-  }, [error, navigate, isSubmit]);
   const handleSubmit = (e) => {
     e.preventDefault();
     setError(validate(error));
@@ -43,12 +37,13 @@ export default function Registration() {
         arr.push(...oldUser);
         arr.push(value);
         clearData();
-        return localStorage.setItem('data', JSON.stringify(arr));
+        localStorage.setItem('data', JSON.stringify(arr));
+        navigate('/login');
       }
       arr.push(value);
       clearData();
       localStorage.setItem('data', JSON.stringify(arr));
-      setIsSubmit(true);
+      navigate('/login');
     }
   };
   const clearData = () => {
@@ -181,6 +176,7 @@ export default function Registration() {
               variant="outlined"
               sx={{ width: '210px' }}
               onClick={loginPage}
+              type="submit"
             >
               Login
             </Button>
