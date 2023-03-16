@@ -18,6 +18,7 @@ export default function About() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Online Examination Portal
           </Typography>
+          <img src="" alt="" />
           <Button sx={{ backgroundColor: 'white' }} onClick={handleClick}>Login</Button>
         </Toolbar>
       </AppBar>
