@@ -80,7 +80,12 @@ export default function Login() {
             <Stack
               sx={{ display: 'flex', gap: '115px', flexDirection: 'row-reverse' }}
             >
-              <Button variant="contained" onClick={login}>
+              <Button
+                variant="contained"
+                onClick={login}
+                type="submit"
+
+              >
                 Login
               </Button>
               <Button
