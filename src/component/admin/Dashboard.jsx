@@ -13,11 +13,10 @@ import Typography from '@mui/material/Typography';
 import { Outlet, useNavigate } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Divider } from '@mui/material';
-import AddPaper from './AddPaper';
 
 const drawerWidth = 240;
 
-function ResponsiveDrawer(props) {
+function ResponsiveDrawer() {
   const navigate = useNavigate();
   const menuList = ['Add Paper', 'View Paper', 'View Result'];
   const menuNavigate = ['addPaper', 'viewPaper', 'viewResult'];

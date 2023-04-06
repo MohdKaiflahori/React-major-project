@@ -1,4 +1,4 @@
-export default function Drawer(theme) {
+export default function Drawer() {
   return {
     MuiDrawer: {
       styleOverrides: {
