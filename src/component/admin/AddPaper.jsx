@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable consistent-return */
 import React, { useState } from 'react';
 import {
@@ -25,6 +26,16 @@ const defaultValue = {
   ],
 };
 export default function AddPaper() {
+  const [mess, setMess] = React.useState();
+  React.useEffect(() => {
+    async function fetchData() {
+      const data = await fetch('http://localhost:5399/get');
+      const msg = await data.json();
+      setMess(msg.message);
+    }
+    fetchData();
+  }, []);
+  console.log(mess);
   const [formData, setFormData] = useState(defaultValue);
   const [error, setError] = useState({});
   const paperData = localStorage.getItem('paper');
@@ -107,6 +118,7 @@ export default function AddPaper() {
             >
               Question Paper
             </Typography>
+            <Typography>{ mess }</Typography>
             <MainContainerStyle component="form" sx={{ gap: '15px' }}>
               <TextField
                 id="outlined-basic"
@@ -144,7 +156,7 @@ export default function AddPaper() {
             </MainContainerStyle>
             <MainContainerStyle>
               {formData.questions.map((x, i) => (
-                <React.Fragment key={x.key}>
+                <React.Fragment key={x.key + i}>
                   <Box key={x.key} sx={{ gap: '10px' }}>
                     <TextField
                       sx={{ display: 'block' }}
